@@ -1,0 +1,41 @@
+# AWS EC2 Instances Configuration for CloudWatch Monitoring
+# ==========================================================
+# 
+# This YAML file defines EC2 instances that need CloudWatch alarms for monitoring.
+# The pipeline will automatically create StatusCheckFailed alarms for each instance.
+#
+# INSTRUCTIONS:
+# 1. Add instances under the 'instances' section
+# 2. Required fields: name, region, instance_id
+# 3. Optional fields: description, environment, owner
+# 4. Use proper YAML indentation (2 spaces)
+# 5. Instance names should be descriptive and unique
+# 6. Ensure instance IDs are correct for the specified region
+#
+# ALARM DETAILS:
+# - Alarm Name Format: EC2-Availability-{instance-name}
+# - Metric: StatusCheckFailed
+# - Threshold: >= 1 failure
+# - Period: 5 minutes
+# - Evaluation: 1 period
+#
+# SUPPORTED REGIONS:
+# us-east-1, us-west-1, us-west-2, eu-west-1, eu-central-1, 
+# ap-southeast-1, ap-northeast-1, please chcek before initalizing the script if the region is supported.
+
+# Global configuration (optional)
+config:
+  default_region: us-east-1
+  alarm_prefix: "EC2-Availability"
+  notification_topic: "arn:aws:sns:us-west-2:123456789012:YourSNSTopic"
+  
+# EC2 Instances to monitor
+instances:
+  # Server details (mandate)
+  - name: name-env-customer
+    region: us-east-1
+    instance_id: i-xxxxxxxxxxxxx # Replace with your actual instance ID
+    description: "for refrence, please replace with your instance details"
+    environment: dev/prod/test/poc
+    owner: <instance-owner-can-be-found-in-tags>
+    criticality: high/medium/low
